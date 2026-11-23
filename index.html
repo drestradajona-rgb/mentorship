@@ -102,7 +102,31 @@ stages.forEach(([title,instructions,outputs],i)=>{
         <li><a href="https://docs.google.com/document/d/1TeWb0pyjz8Cv1EpDx9QDyRdQGTck2f0S/edit" target="_blank" rel="noopener noreferrer">UPHSD Evaluation Sheet for Colloquium / Proposal Defense</a>. If the panel requires a separate signed Colloquium Approval Sheet, request it from your adviser or the Graduate School.</li>
         <li><a href="https://docs.google.com/document/d/1fI5A7C2utS91yJ0Cqcw2yVft7Ta24omY/edit#heading=h.hmmyvdys3rvt" target="_blank" rel="noopener noreferrer">UPHSD Agreement Form</a>. Complete this after passing the colloquium, as directed by your adviser or the Graduate School.</li>
       </ul><p>Submit your revised Chapters 1&#8211;3 manuscript with the required panel forms.</p></details>`:''}
-    ${i===5?`<details class="panel" open><summary><strong>Stage 6 ethics forms and guidelines</strong></summary>${ethicsReviewGuidance('stage-6')}</details>`:''}`;
+    ${i===5?`<details class="panel" open><summary><strong>Stage 6 ethics forms and guidelines</strong></summary>${ethicsReviewGuidance('stage-6')}</details>`:''}
+    ${i===6?`<details class="panel" open><summary><strong>Stage 7 forms and data collection guidelines</strong></summary>
+      <p>Use the versions approved by your ethics review body and research site. These samples are drafting aids. Before sharing a new or revised form with participants, confirm whether it needs ethics approval.</p>
+      <h3>Participant letters and consent forms</h3>
+      <details><summary>Sample participant invitation letter</summary>
+        <p>Dear [prospective participant],</p><p>I am [researcher name] from [university/program]. I invite you to take part in [study title], which aims to [purpose in plain language]. You are being invited because [eligibility reason]. Participation involves [activity, location or platform, and estimated time]. Taking part is voluntary. If you would like to learn more, contact [researcher and contact details]. Please review the participant information and consent form before deciding.</p>
+      </details>
+      <details><summary>Sample participant information and informed consent form</summary>
+        <p><strong>Study and researcher.</strong> [Study title, researcher, university, and contact details.]</p>
+        <p><strong>What you will do.</strong> [Purpose, activities, time, location, and whether recording is requested.]</p>
+        <p><strong>Risks and benefits.</strong> [Foreseeable risks, steps to reduce them, expected benefits if any, and compensation if applicable.]</p>
+        <p><strong>Voluntary participation.</strong> You may decline, skip questions, or stop without penalty. [Explain how to withdraw and any limits on removing data after anonymization or aggregation.]</p>
+        <p><strong>Privacy and use of data.</strong> [What is collected, who can access it, storage, retention, reporting, and limits to confidentiality.]</p>
+        <p><strong>Questions or concerns.</strong> [Researcher and independent ethics contact.]</p>
+        <p><strong>Consent.</strong> I have read or had this information explained to me, had an opportunity to ask questions, and voluntarily agree to participate. [Approved signature/date or electronic consent method.] Use a separate recording choice when applicable.</p>
+      </details>
+      <details><summary>Other forms to prepare as applicable</summary>
+        <ul><li>Site permission letter and written authorization. State the study purpose, requested access, dates, activities, and privacy safeguards.</li><li>Parent or guardian permission and age-appropriate assent for minors, as specified in the approved protocol.</li><li>Recording permission, recruitment script, eligibility screener, debriefing sheet, and withdrawal instructions where applicable.</li><li>Data collection log, secure participant ID system, and approved data management plan. Keep consent records separate from research responses where feasible.</li></ul>
+      </details>
+      <h3>Documents by research design</h3>
+      <ul><li><strong>Qualitative.</strong> Approved interview or focus group guide or observation protocol, recording permissions, field notes and reflexivity log, transcription and de-identification plan, and a reminder about confidentiality limits in focus groups.</li>
+      <li><strong>Quantitative.</strong> Approved questionnaire, assessment, or data extraction form, applicable instrument permissions and validation or pilot documentation, administration instructions, codebook, and response or missing-data log.</li>
+      <li><strong>Mixed methods.</strong> Prepare the applicable documents for both components. Explain which activities participants are agreeing to, any follow-up contact and whether responses will be linked across phases. Use an approved plan to link and integrate data securely.</li></ul>
+      <p><a href="#stage-6">Review Stage 6 ethics forms and approval requirements</a></p>
+    </details>`:''}`;
 });
 pages.forEach(([id,name])=>{const s=document.createElement('section');s.id=id;s.className='page';s.innerHTML=pageContent[id];main.appendChild(s)});
 document.querySelectorAll('input[data-key]').forEach(input=>{try{input.checked=localStorage.getItem('mentor-'+input.dataset.key)==='1'}catch(e){}input.addEventListener('change',()=>{try{localStorage.setItem('mentor-'+input.dataset.key,input.checked?'1':'0')}catch(e){}document.querySelectorAll('input[data-key]').forEach(peer=>{if(peer.dataset.key===input.dataset.key)peer.checked=input.checked});updateProgress()})});function updateProgress(){let inputs=[...document.querySelectorAll('[data-checklist="progress"] input')],n=inputs.filter(x=>x.checked).length;document.getElementById('progressText').textContent=`${n} of ${inputs.length} milestones completed`;document.getElementById('progressFill').style.width=`${100*n/inputs.length}%`};function exportProgress(){let lines=[...document.querySelectorAll('[data-checklist="progress"] .check')].map(e=>(e.querySelector('input').checked?'[x] ':'[ ] ')+e.textContent.trim());let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([lines.join('\n')],{type:'text/plain'}));a.download='research-progress.txt';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}window.addEventListener('hashchange',()=>go(location.hash.slice(1)));go(location.hash.slice(1)||'home');
