@@ -174,7 +174,7 @@ body.darkmode #trackerSavePanel{background:#35252a;color:#fff0cf;border-color:#a
     if(progressPage)progressPage.appendChild(progressPanel);
   }
   const checklistInputs=[...document.querySelectorAll('[data-checklist="progress"] input[data-key]')];
-  const tracker=document.querySelector('#home [data-checklist="progress"]');
+  const tracker=document.querySelector('#my-research-progress [data-checklist="progress"]');
   if(!tracker||!checklistInputs.length)return;
   const box=document.createElement('div');box.id='trackerSavePanel';
   box.innerHTML='<strong>My saved research progress</strong><p>Check a milestone when completed. Changes are saved automatically on this device. Use Download backup to transfer or safeguard your progress, and Restore backup to load it later.</p><p id="trackerSaveStatus" role="status" aria-live="polite">Checking saved progress…</p><button type="button" class="btn" id="trackerSaveNow">Save progress</button><button type="button" class="btn" id="trackerBackup">Download backup</button><button type="button" class="btn" id="trackerRestore">Restore backup</button><input type="file" id="trackerImport" accept="application/json,.json" aria-label="Select research progress backup">';
