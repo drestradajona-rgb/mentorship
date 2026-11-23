@@ -30,21 +30,16 @@ document.querySelectorAll('input[data-key]').forEach(input=>{try{input.checked=l
 (function(){
 const home=document.getElementById('home');if(home){const intro=document.createElement('div');intro.innerHTML=`<div class="dynamic-hero"><div class="eyebrow">WELCOME TO YOUR RESEARCH COMMUNITY</div><h2>Discover. Reflect. Grow.</h2><p>Every research milestone is an opportunity to deepen your scholarship and make a meaningful contribution.</p><div class="statgrid"><div class="stat"><strong id="homePercent">0%</strong><small>Personal progress</small></div><div class="stat"><strong id="homeCount">0/12</strong><small>Milestones completed</small></div></div></div>`;home.prepend(intro)}
 const road=document.getElementById('roadmap');if(road&&typeof stages!=='undefined'){
-const stageDestinations=['roadmap','manuscript','manuscript','defense','defense','ethics','ethics','manuscript','defense','defense','defense','roadmap','roadmap','defense','roadmap'];
-let el=document.createElement('div');
-el.innerHTML=`<h2>Explore the 15 stages</h2><p class="micro">Select <strong>View requirements</strong> to open the relevant guidance page for each milestone.</p><div class="stagegrid">${stages.map((s,i)=>`<a class="stagecard" href="#${stageDestinations[i]}" data-stage="${i}" style="display:block;text-decoration:none;color:inherit"><span class="num">STAGE ${i+1}</span><b>${s[0]}</b><small style="text-decoration:underline">View requirements →</small></a>`).join('')}</div>`;
-road.prepend(el);
-el.querySelectorAll('[data-stage]').forEach(a=>a.addEventListener('click',event=>{
- event.preventDefault();const n=Number(a.dataset.stage),dest=stageDestinations[n],st=stages[n];
- document.querySelectorAll('.stage-requirements-banner').forEach(x=>x.remove());
- const banner=document.createElement('section');banner.className='focus-banner stage-requirements-banner';
- banner.setAttribute('aria-label','Stage '+(n+1)+' requirements');
- const heading=document.createElement('h3');heading.textContent='Stage '+(n+1)+' · '+st[0];banner.appendChild(heading);
- const objective=document.createElement('p');objective.innerHTML=st[1];banner.appendChild(objective);
- const label=document.createElement('strong');label.textContent='Required outputs and evidence:';banner.appendChild(label);
- const outputs=document.createElement('p');outputs.textContent=st[2];banner.appendChild(outputs);
- const back=document.createElement('a');back.href='#roadmap';back.textContent='← Return to the Research Roadmap';back.addEventListener('click',e=>{e.preventDefault();go('roadmap')});banner.appendChild(back);
- const page=document.getElementById(dest);page.prepend(banner);go(dest);banner.scrollIntoView({block:'start',behavior:'instant'});
+const overview=document.createElement('div');
+overview.innerHTML=`<h2>Explore the 15 stages</h2><div class="stagegrid">${stages.map((stage,i)=>`<a class="stagecard" href="#roadmap" data-stage="${i}"><span class="num">STAGE ${i+1}</span><b>${stage[0]}</b><small>View requirements →</small></a>`).join('')}</div>`;
+const stagePanels=[...road.querySelectorAll('section.panel')];
+road.prepend(overview);
+overview.querySelectorAll('[data-stage]').forEach(link=>link.addEventListener('click',event=>{
+  event.preventDefault();
+  const panel=stagePanels[Number(link.dataset.stage)];
+  panel.tabIndex=-1;
+  panel.focus({preventScroll:true});
+  panel.scrollIntoView({block:'start'});
 }));
 }
 const toolbar=document.createElement('div');toolbar.className='toolbar';toolbar.innerHTML=`<input id="siteSearch" type="search" placeholder="Search guidelines, UERB, colloquium..." aria-label="Search website"><button class="toolbutton" id="themeToggle" type="button">☾ Dark mode</button><button class="toolbutton" id="notesJump" type="button">✎ My notes</button>`;const nav=document.getElementById('nav');nav.after(toolbar);const results=document.createElement('div');results.className='search-results';toolbar.after(results);const search=toolbar.querySelector('#siteSearch');search.addEventListener('input',()=>{const q=search.value.trim().toLowerCase();if(q.length<2){results.innerHTML='';return}const matches=[...document.querySelectorAll('.page')].map(e=>({id:e.id,title:document.querySelector('nav button[data-id="'+e.id+'"]')?.textContent||e.id,text:e.innerText})).filter(x=>x.text.toLowerCase().includes(q)).slice(0,8);results.innerHTML=matches.length?matches.map(x=>`<button class="search-result" data-target="${x.id}"><b>${x.title}</b><div class="micro">Open this page to find “${q.replace(/[&<>"']/g,'')}”</div></button>`).join(''):'<p class="micro">No matching pages. Try another term.</p>';results.querySelectorAll('[data-target]').forEach(b=>b.onclick=()=>{go(b.dataset.target);results.innerHTML='';search.value=''})});
